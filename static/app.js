@@ -12,5 +12,6 @@ vessel_length_enterbtn.addEventListener('click', async () => {
         })
     });
 
-    console.log(response)
+    const result = await response.json()
+    console.log(result)
 }) 
