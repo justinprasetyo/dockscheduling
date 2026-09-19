@@ -12,6 +12,8 @@ const reasontext = document.getElementById("reason")
 const alerttext = document.getElementById("alert")
 
 const reservation_confirmation_page = document.getElementById("reservation-confirmation")
+const confirmbtn = document.getElementById("confirm-reservation")
+const unconfirmbtn = document.getElementById("unconfirm-reservation")
 
 enterbtn.addEventListener('click', async () => {
     const response = await fetch('/api/reservations', {
@@ -56,4 +58,28 @@ deletebtn.addEventListener('click', async () => {
             delete: true
         })
     });
+})
+
+confirmbtn.addEventListener('click', async () => {
+    const response = await fetch('/api/reservations', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            dock_number: dock_name.value,
+            length: vessel_length.value,
+            width: vessel_width.value,
+            start_date: date_start.value,
+            end_date: date_end.value,
+            reason: reasontext.value,
+            confirm_reservation: true
+        })
+    });
+
+    reservation_confirmation_page.classList.remove("active")
+})
+
+unconfirmbtn.addEventListener('click', () => {
+    reservation_confirmation_page.classList.remove("active")
 })

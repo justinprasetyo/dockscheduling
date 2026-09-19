@@ -14,3 +14,5 @@ North Pier East - 240'
 Inner Channel - 55'
 South Float West - 90'
 South Float East - 90'
+
+end date is inclusive, a boat is expected to leave the night before another potential boat arrives.

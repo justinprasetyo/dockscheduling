@@ -8,10 +8,12 @@ def check_size(dock_num, length, width):
         return False
 
 def check_date(dock_num, start, end): #this can be more optimal than o(n^2)
-    arr = check_dockreservations(dock_num)
-    for i in range(0, (date.fromisoformat(end) - date.fromisoformat(start)).days + 1):
-        day = start + timedelta(days=i)
-        for j in range(len(arr)):
-            if day >= arr[j][0] and day <= arr[j][1]:
-                return False #make it return the overlapping dates
-    return True
+    rows = check_dockreservations(dock_num, end, start)
+    arr = []
+    for row in rows:
+        arr.append(row)
+
+    if len(arr) > 0:
+        return arr
+    else:
+        return True

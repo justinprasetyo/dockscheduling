@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
-import requests
 
 from database import dock_dict, make_reservation, delete_reservation, get_allreservations
 from check import check_size, check_date
@@ -31,17 +30,22 @@ def get_available():
     if sizecheck:
         result["size"] = True
     else:
-        return jsonify(f"Sizing does not fit dock: ({dock_dict[int(data["dock_number"]) - 1]["length"]}ft x {dock_dict[int(data["dock_number"]) - 1]["width"]}ft)")
+        return jsonify(f"Sizing does not fit dock: ({dock_dict[int(data['dock_number']) - 1]['length']}ft x {dock_dict[int(data['dock_number']) - 1]['width']}ft)")
 
-    #datecheck = check_date(data["dock_number"], data["start_date"], data["end_date"])
-    #if datecheck == True:
-    #    result["date"] = True
-    #else:
-    #    return jsonify(f"Timeframe already booked: (**overlapping dates**)")
+    datecheck = check_date(data["dock_number"], data["start_date"], data["end_date"])
+    if datecheck == True:
+        result["date"] = True
+    else:
+        err_message = f"Timeframe already booked: "
+        for obj in datecheck:
+            err_message += f"{obj['start_date']} to {obj['end_date']} (reason: {obj['reason']}). "
+        return jsonify(err_message)
 
     #make make-reservation into a yes or no button with a pop-up
-    make_reservation(data["dock_number"], data["start_date"], data["end_date"], data["reason"])
-    get_allreservations()
+    if "confirm_reservation" in data and data["confirm_reservation"]:
+        make_reservation(data["dock_number"], data["start_date"], data["end_date"], data["reason"])
+        get_allreservations()
+        
     return jsonify(result)
 
 if __name__ == "__main__":

@@ -4,37 +4,37 @@ dock_dict = [
     {   
         "name": "North Pier West - 410'",
         "dock_number": 1,
-        "width": 20,
-        "length": 100
+        "width": 100,
+        "length": 410
     },
     {   
         "name": "North Pier Face - 75'",
         "dock_number": 2,
-        "width": 30,
-        "length": 150
+        "width": 40,
+        "length": 75
     },
     {   
         "name": "North Pier East - 240'",
         "dock_number": 3,
         "width": 40,
-        "length": 200
+        "length": 240
     },
     {   
         "name": "Inner Channel - 55'",
         "dock_number": 4,
-        "width": 20,
-        "length": 100
+        "width": 30,
+        "length": 55
     },
     {   
         "name": "South Float West - 90'",
         "dock_number": 5,
-        "width": 30,
-        "length": 150
+        "width": 50,
+        "length": 90
     },
     {   "name": "South Float East - 90'",
         "dock_number": 6,
-        "width": 40,
-        "length": 200
+        "width": 50,
+        "length": 90
     }
 ]
 
@@ -138,19 +138,22 @@ def delete_reservation(dock_num, start, end):
     connection.close()
     return '', 204
 
-def check_dockreservations(dock_num):
+def check_dockreservations(dock_num, new_end, new_start):
     connection = get_db()
 
     arr = []
     rows = connection.execute("""
-        SELECT dock_number, start_date, end_date
-        FROM reservations
-        WHERE dock_number = ?;
-    """, (
-        dock_num
+       SELECT id, start_date, end_date, reason FROM reservations
+       WHERE dock_number = ? 
+       AND start_date <= ? 
+       AND end_date >= ?
+   """, (
+       dock_num, 
+       new_end, 
+       new_start
     )).fetchall()
     for row in rows:
-        arr.append([row["start_date"], row["end_date"]])
+        arr.append(dict(row))
     connection.close()
     return arr
 
