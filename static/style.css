@@ -1,8 +1,41 @@
 h1 {
     font-size: 50px;
     color:rgb(46, 73, 126);
+    margin-bottom: -20px;
 }
 
 #alert {
     color:red;
+}
+
+.reservation-confirmation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1); 
+
+    z-index: 1000; 
+    opacity: 0;
+    visibility: hidden;
+}
+
+.reservation-confirmation.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1); 
+
+    height: 50vh;
+    width: 400px;
+    opacity: 0.9;
+    visibility: visible;
+    background-color: rgb(135, 139, 192);
+    border-radius: 10px;
+    border:1px, rgb(0, 0, 0), solid
 }
