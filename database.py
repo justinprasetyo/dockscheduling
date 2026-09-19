@@ -39,7 +39,6 @@ dock_dict = [
 ]
 
 connection = sqlite3.connect("database.db")
-cursor = connection.cursor()
 
 connection.execute("""
     CREATE TABLE IF NOT EXISTS docks (
@@ -60,6 +59,16 @@ for dock in dock_dict:
         dock["length"]
     ))
 
+connection.execute("""
+    CREATE TABLE IF NOT EXISTS reservations (
+        id INTEGER PRIMARY KEY,
+        dock_number INTEGER,
+        start_date TEXT,
+        end_date TEXT,
+        reason TEXT
+    )
+""")
+
 connection.commit()
 connection.close()
 
@@ -77,4 +86,39 @@ def get_allrows():
 
     connection.close()
     return rows
+
+def make_reservation(dock_num, start, end, reason):
+    connection = get_db()
+
+    connection.execute("""
+        INSERT INTO reservations (dock_number, start_date, end_date, reason)
+        VALUES (?, ?, ?, ?)
+    """, (
+        dock_num,
+        start,
+        end,
+        reason
+    ))
+
+    connection.commit()
+    connection.close()
+    return '', 204
+
+def delete_reservation(dock_num, start, end):
+    connection = get_db()
+
+    connection.execute("""
+        DELETE FROM reservations
+        WHERE dock_number = ?
+        AND start_date = ?
+        AND end_date = ?;
+    """, (
+        dock_num,
+        start,
+        end
+    ))
+
+    connection.commit()
+    connection.close()
+    return '', 204
 

@@ -19,19 +19,26 @@
             <option value="6">South Float East - 90'</option>
         </select>
     </div>
-
+    <br>
     <div>
         <label for="vessellength">Input vessel dimensions:</label>
         <input placeholder="length of vessel(ft)" id="vessellength" type="number">
         <input placeholder="width of vessel(ft)" id="vesselwidth" type="number">
-        <button id="enter-btn-vessellengthwidth">Enter</button>
     </div>
-
+    <br>
     <div>
         <label for="startdate">Input booking duration:</label>
         <input placeholder="start date" id="startdate" type="date">
         <input placeholder="end date" id="enddate" type="date">
-        <button id="enter-btn-date">Enter</button>
+    </div>
+
+    <div>
+        <input id="reason">
+        <button id="enter-btn-all">Enter</button>
+    </div>
+
+    <div>
+        <p id="alert"></p>
     </div>
 
     <script src="{{ url_for('static', filename='app.js') }}" defer></script>

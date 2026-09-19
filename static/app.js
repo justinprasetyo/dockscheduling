@@ -1,26 +1,40 @@
 const vessel_length = document.getElementById("vessellength")
 const vessel_width = document.getElementById("vesselwidth")
-const vessel_length_enterbtn = document.getElementById("enter-btn-vessellengthwidth")
+const enterbtn = document.getElementById("enter-btn-all")
 
 const dock_name = document.getElementById("dockname")
 
-const start_date = document.getElementById("startdate")
-const end_date = document.getElementById("enddate")
+const date_start = document.getElementById("startdate")
+const date_end = document.getElementById("enddate")
+const reasontext = document.getElementById("reason")
 
-vessel_length_enterbtn.addEventListener('click', async () => {
-    const response = await fetch('/api/dimensions', {
+const alerttext = document.getElementById("alert")
+
+enterbtn.addEventListener('click', async () => {
+    const response = await fetch('/api/reservations', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+            dock_number: dock_name.value,
             length: vessel_length.value,
-            width: vessel_width.value
+            width: vessel_width.value,
+            start_date: date_start.value,
+            end_date: date_end.value,
+            reason: reasontext.value
         })
     });
 
     const result = await response.json()
+    if (typeof result == "string") {
+        alerttext.textContent = `error: ${result}`
+    } else {
+        alerttext.textContent = ""
+        window.alert("Reservation made. Thank you.")
+    }
+    
     console.log(result)
     console.log(dock_name.value)
-    console.log(`${start_date.value}, ${end_date.value}`)
+    console.log(`${date_start.value}, ${date_end.value}`)
 }) 
