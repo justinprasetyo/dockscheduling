@@ -15,12 +15,6 @@ def get_compatible():
 
     if data is None:
         return jsonify({"error": "No valid data received"}), 400
-    
-    #response = requests.post(
-        #'/api/dimensions',
-        #json={
-            #"compatible": True #for now, calculations later
-        #})
 
     return jsonify({"compatible": True}) #for now, calculations later
 

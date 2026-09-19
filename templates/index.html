@@ -9,16 +9,31 @@
 <body>
     <h1>Dock Scheduler</h1>
     <div>
+        <label for="dockname">Choose a dock:</label>
+        <select id="dockname" name="docks">
+            <option value="1">North Pier West - 410'</option>
+            <option value="2">North Pier Face - 75'</option>
+            <option value="3">North Pier East - 240'</option>
+            <option value="4">Inner Channel - 55'</option>
+            <option value="5">South Float West - 90'</option>
+            <option value="6">South Float East - 90'</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="vessellength">Input vessel dimensions:</label>
         <input placeholder="length of vessel(ft)" id="vessellength" type="number">
         <input placeholder="width of vessel(ft)" id="vesselwidth" type="number">
         <button id="enter-btn-vessellengthwidth">Enter</button>
     </div>
 
     <div>
+        <label for="startdate">Input booking duration:</label>
         <input placeholder="start date" id="startdate" type="date">
         <input placeholder="end date" id="enddate" type="date">
         <button id="enter-btn-date">Enter</button>
     </div>
+
     <script src="{{ url_for('static', filename='app.js') }}" defer></script>
 </body>
 </html>
