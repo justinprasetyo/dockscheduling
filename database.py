@@ -90,7 +90,7 @@ def get_alldocks():
     connection.close()
     return '', 204
 
-def get_allreservations():
+def allreservations():
     connection = get_db()
 
     rows = connection.execute("""
@@ -115,7 +115,7 @@ def make_reservation(dock_num, start, end, reason):
         end,
         reason
     ))
-
+    print("reservation successfully made!")
     connection.commit()
     connection.close()
     return '', 204
@@ -152,6 +152,21 @@ def check_dockreservations(dock_num, new_end, new_start):
        new_end, 
        new_start
     )).fetchall()
+    for row in rows:
+        arr.append(dict(row))
+    connection.close()
+    return arr
+
+def get_allreservations():
+    connection = get_db()
+
+    arr = []
+    rows = connection.execute("""
+        SELECT id, dock_number, start_date, end_date, reason
+        FROM reservations
+        ORDER BY start_date 
+   """, 
+   ).fetchall()
     for row in rows:
         arr.append(dict(row))
     connection.close()

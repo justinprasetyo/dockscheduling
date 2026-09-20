@@ -9,7 +9,6 @@
 <body>
     <div>
         <h1>Dock Scheduler</h1>
-        <p>by Justin P</p>
     </div>
     
     <div>
@@ -52,6 +51,33 @@
         <button id="unconfirm-reservation">no</button>
         <button id="confirm-reservation">yes</button>
     </div>
+
+    <section class="reservations-list">
+        <h2>Current Reservations</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>DOCK</th>
+                    <th>START</th>
+                    <th>END</th>
+                    <th>REASON</th>
+                    <th>ID</th>
+                </tr>
+            </thead>
+
+            <tbody id="reservations-table">
+                <tr>
+                    <th>test</th>
+                    <th>test</th>
+                    <th>test</th>
+                    <th>test</th>
+                    <th>1923912893012</th>
+                </tr>
+                
+            </tbody>
+        </table>
+    </section>
 
     <script src="{{ url_for('static', filename='app.js') }}" defer></script>
 </body>

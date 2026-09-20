@@ -20,22 +20,29 @@ def get_available():
 
     if "delete" in data and data["delete"]:
         delete_reservation(data["dock_number"], data["start_date"], data["end_date"])
-        get_allreservations()
         return '', 204
 
+    #i dont need this for now
     #calculate other available docks too with proper sizing and dates if results in error
-    result = {"available-docks": [], "size": False, "date": False}
+    #result = {"available-docks": [], "size": False, "date": False}
 
+    #vessel dimensions input checks
+    if data["length"] == '' or data["width"] == '':
+        return jsonify("If reserving for a non-vessel event, please type 0 for dimensions.")
+    elif float(data["length"]) < 0 or float(data["width"]) < 0:
+        return jsonify("Please enter valid numbers.")
+
+    #vessel dimensional fit check
     sizecheck = check_size(data["dock_number"], data["length"], data["width"])
-    if sizecheck:
-        result["size"] = True
-    else:
+    if sizecheck != True:
         return jsonify(f"Sizing does not fit dock: ({dock_dict[int(data['dock_number']) - 1]['length']}ft x {dock_dict[int(data['dock_number']) - 1]['width']}ft)")
 
+    #date checks
+    if data["start_date"] > data["end_date"]:
+        return jsonify(f"Start date must come before or at the end date.")
+    
     datecheck = check_date(data["dock_number"], data["start_date"], data["end_date"])
-    if datecheck == True:
-        result["date"] = True
-    else:
+    if datecheck != True:
         err_message = f"Timeframe already booked: "
         for obj in datecheck:
             err_message += f"{obj['start_date']} to {obj['end_date']} (reason: {obj['reason']}). "
@@ -43,10 +50,12 @@ def get_available():
 
     #make make-reservation into a yes or no button with a pop-up
     if "confirm_reservation" in data and data["confirm_reservation"]:
+        dock_name = dock_dict[int(data["dock_number"]) - 1]["name"]
+        rows = get_allreservations()
         make_reservation(data["dock_number"], data["start_date"], data["end_date"], data["reason"])
-        get_allreservations()
-        
-    return jsonify(result)
+        return jsonify(rows)
+
+    return jsonify({})
 
 if __name__ == "__main__":
     app.run(port=8080, debug=True)
