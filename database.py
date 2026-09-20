@@ -120,18 +120,14 @@ def make_reservation(dock_num, start, end, reason):
     connection.close()
     return '', 204
 
-def delete_reservation(dock_num, start, end):
+def delete_reservation(res_id):
     connection = get_db()
 
     connection.execute("""
         DELETE FROM reservations
-        WHERE dock_number = ?
-        AND start_date = ?
-        AND end_date = ?;
+        WHERE id = ?
     """, (
-        dock_num,
-        start,
-        end
+        res_id
     ))
 
     connection.commit()

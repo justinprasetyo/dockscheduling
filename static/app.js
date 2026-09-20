@@ -15,7 +15,13 @@ const reservation_confirmation_page = document.getElementById("reservation-confi
 const confirmbtn = document.getElementById("confirm-reservation")
 const unconfirmbtn = document.getElementById("unconfirm-reservation")
 
+const reservation_confirmation_page_delete = document.getElementById("reservation-confirmation-delete")
+const confirmbtn_resdelete = document.getElementById("confirm-reservation-delete")
+const unconfirmbtn_resdelete = document.getElementById("unconfirm-reservation-delete")
+
 const reservations_table = document.getElementById("reservations-table")
+
+let selected_id
 
 const create_reservation = function(rowsList) {
     for (row of rowsList) {
@@ -25,16 +31,21 @@ const create_reservation = function(rowsList) {
         const end_col = document.createElement("th")
         const reason_col = document.createElement("th")
         const id_col = document.createElement("th")
+        const deleterow_btn = document.createElement("button")
+        deleterow_btn.classList.add("delete_reservation")
+        deleterow_btn.id = row["id"]
         dock_col.textContent = row["dock_name"]
         start_col.textContent = row["start_date"]
         end_col.textContent = row["end_date"]
         reason_col.textContent = row["reason"]
         id_col.textContent = row["id"]
+        deleterow_btn.textContent = "x"
         newRow.append(dock_col)
         newRow.append(start_col)
         newRow.append(end_col)
         newRow.append(reason_col)
         newRow.append(id_col)
+        newRow.append(deleterow_btn)
         reservations_table.append(newRow)
     }
 }
@@ -45,6 +56,7 @@ async function loadReservations() {
     const rows = await response.json()
     reservations_table.innerHTML = "" //clear old rows first
     create_reservation(rows)
+    deleteButtons()
 }
 
 loadReservations()   
@@ -79,21 +91,6 @@ enterbtn.addEventListener('click', async () => {
     console.log(`${date_start.value}, ${date_end.value}`)
 }) 
 
-deletebtn.addEventListener('click', async () => {
-    const response = await fetch('/api/reservations', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            dock_number: dock_name.value,
-            start_date: date_start.value,
-            end_date: date_end.value,
-            delete: true
-        })
-    });
-})
-
 confirmbtn.addEventListener('click', async () => {
     const response = await fetch('/api/reservations', {
         method: 'POST',
@@ -124,3 +121,39 @@ confirmbtn.addEventListener('click', async () => {
 unconfirmbtn.addEventListener('click', () => {
     reservation_confirmation_page.classList.remove("active")
 })
+
+confirmbtn_resdelete.addEventListener('click', async () => {
+    const response = await fetch('/api/reservations', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            reservation_id: selected_id,
+            delete: true
+        })
+    });
+
+    reservation_confirmation_page_delete.classList.remove("active")
+    loadReservations()
+})
+
+unconfirmbtn_resdelete.addEventListener('click', () => {
+    reservation_confirmation_page_delete.classList.remove("active")
+})
+
+
+function deleteButtons() {
+    const delete_buttons = document.querySelectorAll('.delete_reservation');
+
+    delete_buttons.forEach((btn, index) => {
+        if (!btn.classList.value.includes("event-made")) {
+            btn.addEventListener('click', async () => {
+                selected_id = delete_buttons[index].id
+                delete_buttons[index].classList.add("event-made")
+                reservation_confirmation_page_delete.classList.add("active")
+            });
+        }
+
+    });
+}

@@ -13,7 +13,7 @@
     
     <div>
         <label for="dockname">Choose a dock:</label>
-        <select id="dockname" name="docks" required>
+        <select id="dockname" name="docks">
             <option value="1">North Pier West - 410'</option>
             <option value="2">North Pier Face - 75'</option>
             <option value="3">North Pier East - 240'</option>
@@ -25,21 +25,20 @@
     <br>
     <div>
         <label for="vessellength">Input vessel dimensions:</label>
-        <input placeholder="length of vessel(ft)" id="vessellength" type="number" required>
-        <input placeholder="width of vessel(ft)" id="vesselwidth" type="number" required>
+        <input placeholder="length of vessel(ft)" id="vessellength" type="number">
+        <input placeholder="width of vessel(ft)" id="vesselwidth" type="number">
     </div>
     <br>
     <div>
         <label for="startdate">Input booking duration:</label>
-        <input placeholder="start date" id="startdate" type="date" required>
-        <input placeholder="end date" id="enddate" type="date" required>
+        <input placeholder="start date" id="startdate" type="date">
+        <input placeholder="end date" id="enddate" type="date">
     </div>
     <br>
     <div>
         <label for="reason">Reason for booking:</label>
-        <input id="reason" placeholder="reason">
+        <input id="reason" placeholder="input vessel/event name if applicable">
         <button id="enter-btn-all">Enter</button>
-        <button id="delete-btn-all">delete (for testing)</button>
     </div>
 
     <div>
@@ -50,6 +49,12 @@
         <h4>confirm reservation?</h4>
         <button id="unconfirm-reservation">no</button>
         <button id="confirm-reservation">yes</button>
+    </div>
+
+    <div class="reservation-confirmation-delete" id="reservation-confirmation-delete">
+        <h4>are you sure you want to cancel this reservation?</h4>
+        <button id="unconfirm-reservation-delete">no</button>
+        <button id="confirm-reservation-delete">yes</button>
     </div>
 
     <section class="reservations-list">

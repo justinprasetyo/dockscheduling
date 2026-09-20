@@ -19,7 +19,7 @@ def get_available():
         return jsonify({"error": "No valid data received"}), 400
 
     if "delete" in data and data["delete"]:
-        delete_reservation(data["dock_number"], data["start_date"], data["end_date"])
+        delete_reservation(data["reservation_id"])
         return '', 204
 
     #i dont need this for now
@@ -52,7 +52,6 @@ def get_available():
 
     #make make-reservation into a yes or no button with a pop-up
     if "confirm_reservation" in data and data["confirm_reservation"]:
-        dock_name = dock_dict[int(data["dock_number"]) - 1]["name"]
         make_reservation(data["dock_number"], data["start_date"], data["end_date"], data["reason"])
         return jsonify({})
 

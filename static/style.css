@@ -68,4 +68,38 @@ tr:hover {
     padding: 24px;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    width: 100vw;
+}
+
+.reservation-confirmation-delete {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1); 
+
+    z-index: 1000; 
+    opacity: 0;
+    visibility: hidden;
+}
+
+.reservation-confirmation-delete.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1); 
+
+    height: 50vh;
+    width: 400px;
+    opacity: 0.9;
+    visibility: visible;
+    background-color: rgb(100, 99, 99);
+    border-radius: 10px;
+    border:1px, rgb(0, 0, 0), solid;
+    color:red;
 }
