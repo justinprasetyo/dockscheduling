@@ -17,7 +17,7 @@ const unconfirmbtn = document.getElementById("unconfirm-reservation")
 
 const reservations_table = document.getElementById("reservations-table")
 
-const create_reservation = function(rowsList) { //connect to backend
+const create_reservation = function(rowsList) {
     for (row of rowsList) {
         const newRow = document.createElement("tr")
         const dock_col = document.createElement("th")
@@ -25,7 +25,7 @@ const create_reservation = function(rowsList) { //connect to backend
         const end_col = document.createElement("th")
         const reason_col = document.createElement("th")
         const id_col = document.createElement("th")
-        dock_col.textContent = row["dock_number"]
+        dock_col.textContent = row["dock_name"]
         start_col.textContent = row["start_date"]
         end_col.textContent = row["end_date"]
         reason_col.textContent = row["reason"]
@@ -38,7 +38,16 @@ const create_reservation = function(rowsList) { //connect to backend
         reservations_table.append(newRow)
     }
 }
-create_reservation([{'id': 3, 'dock_number': 1, 'start_date': '2026-09-19', 'end_date': '2026-09-20', 'reason': 'yes'}])
+//create_reservation([{'id': 3, 'dock_number': 1, 'start_date': '2026-09-19', 'end_date': '2026-09-20', 'reason': 'yes'}])
+
+async function loadReservations() {
+    const response = await fetch('/api/reservations')
+    const rows = await response.json()
+    reservations_table.innerHTML = "" //clear old rows first
+    create_reservation(rows)
+}
+
+loadReservations()   
 
 enterbtn.addEventListener('click', async () => {
     const response = await fetch('/api/reservations', {
@@ -103,6 +112,13 @@ confirmbtn.addEventListener('click', async () => {
     });
 
     reservation_confirmation_page.classList.remove("active")
+
+    const result = await response.json()
+    if (typeof result === "string") {
+        alerttext.textContent = `error: ${result}`
+    } else {
+        await loadReservations()
+    }
 })
 
 unconfirmbtn.addEventListener('click', () => {

@@ -38,24 +38,32 @@ def get_available():
         return jsonify(f"Sizing does not fit dock: ({dock_dict[int(data['dock_number']) - 1]['length']}ft x {dock_dict[int(data['dock_number']) - 1]['width']}ft)")
 
     #date checks
-    if data["start_date"] > data["end_date"]:
+    if data["start_date"] == '' or data["end_date"] == '':
+        return jsonify("Please input dates.")
+    elif data["start_date"] > data["end_date"]:
         return jsonify(f"Start date must come before or at the end date.")
     
     datecheck = check_date(data["dock_number"], data["start_date"], data["end_date"])
     if datecheck != True:
         err_message = f"Timeframe already booked: "
         for obj in datecheck:
-            err_message += f"{obj['start_date']} to {obj['end_date']} (reason: {obj['reason']}). "
+            err_message += f"{obj['start_date']} to {obj['end_date']} (ID: {obj['id']}, reason: {obj['reason']}). "
         return jsonify(err_message)
 
     #make make-reservation into a yes or no button with a pop-up
     if "confirm_reservation" in data and data["confirm_reservation"]:
         dock_name = dock_dict[int(data["dock_number"]) - 1]["name"]
-        rows = get_allreservations()
         make_reservation(data["dock_number"], data["start_date"], data["end_date"], data["reason"])
-        return jsonify(rows)
+        return jsonify({})
 
     return jsonify({})
+
+@app.route('/api/reservations', methods=['GET'])
+def list_reservations():
+    rows = get_allreservations()
+    for row in rows:
+        row["dock_name"] = dock_dict[int(row["dock_number"]) - 1]["name"]
+    return jsonify(rows)
 
 if __name__ == "__main__":
     app.run(port=8080, debug=True)
