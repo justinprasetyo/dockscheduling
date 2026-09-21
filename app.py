@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
+import os
 
 from database import dock_dict, make_reservation, delete_reservation, get_allreservations
 from check import check_size, check_date
@@ -65,4 +66,5 @@ def list_reservations():
     return jsonify(rows)
 
 if __name__ == "__main__":
-    app.run(port=8080, debug=True)
+    app.run(port=int(os.environ.get("PORT", 8080)),
+               debug=os.environ.get("FLASK_DEBUG") == "1")

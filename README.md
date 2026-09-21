@@ -1,4 +1,6 @@
 # dockscheduling
+**Please allow up to 60 seconds for the live demo to wake up on the first load.**
+
 1) Dock Scheduling System
 
 A WHOI marine research facility needs to manage berths of varying lengths. Vessels reserve a berth for specific ranges of days. The waterfront also hosts non-vessel events such as community sail days that also occupy a berth.
@@ -15,4 +17,5 @@ Inner Channel - 55'
 South Float West - 90'
 South Float East - 90'
 
-end date is inclusive, a boat is expected to leave the night before another potential boat arrives.
+-end date is inclusive, a boat is expected to leave the night of the end date (not the morning).
+-a boat is expected to come the morning of the start date.
