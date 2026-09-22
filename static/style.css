@@ -1,105 +1,126 @@
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 24px 16px 60px;
+    color: #1a1a1a;
+    line-height: 1.4;
+}
+
 h1 {
-    font-size: 50px;
-    color:rgb(46, 73, 126);
+    margin-bottom: 24px;
+}
+
+h2, h4 {
+    margin-bottom: 8px;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+input, select, button {
+    font-size: 1rem;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="number"], input[type="date"], input[type="text"], input:not([type]) {
+    margin-right: 8px;
+}
+
+button {
+    background: #2a5fa5;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 8px 16px;
+}
+
+button:hover {
+    background: #1e457d;
+}
+
+#enter-btn-all {
+    margin-top: 4px;
 }
 
 #alert {
-    color:red;
+    color: #b3261e;
+    font-weight: 600;
+    min-height: 1.2em;
 }
 
-.reservation-confirmation {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(1); 
-
-    z-index: 1000; 
-    opacity: 0;
-    visibility: hidden;
+.reservation-confirmation,
+.reservation-confirmation-delete {
+    display: none;
+    border: 1px solid #ccc;
+    background: #f7f7f7;
+    border-radius: 6px;
+    padding: 16px;
+    margin: 16px 0;
 }
 
-.reservation-confirmation.active {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(1); 
+.reservation-confirmation.active,
+.reservation-confirmation-delete.active {
+    display: block;
+}
 
-    height: 50vh;
-    width: 400px;
-    opacity: 0.9;
-    visibility: visible;
-    background-color: rgb(169, 169, 169);
-    border-radius: 10px;
-    border:1px, rgb(0, 0, 0), solid
+.reservation-confirmation p,
+.reservation-confirmation-delete p {
+    white-space: pre-line;
+    margin-bottom: 12px;
+}
+
+.reservation-confirmation button,
+.reservation-confirmation-delete button {
+    margin-right: 8px;
+}
+
+#unconfirm-reservation,
+#unconfirm-reservation-delete {
+    background: #888;
+}
+
+#unconfirm-reservation:hover,
+#unconfirm-reservation-delete:hover {
+    background: #666;
+}
+
+.reservations-list {
+    margin-top: 32px;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-}
-
-thead {
-    font-size: 20px;
-    font-style: italic;
+    margin-top: 12px;
 }
 
 th, td {
-    padding: 12px 16px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    padding: 8px 10px;
+    border-bottom: 1px solid #e0e0e0;
 }
 
-th {
+thead th {
+    background: #f0f0f0;
     font-weight: 600;
 }
 
-tr:hover {
-    background: #f7f7f7;
+tbody tr:nth-child(even) {
+    background: #fafafa;
 }
 
-.reservations-list {
-    background: rgb(227, 226, 226);
-    padding: 24px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    width: 100vw;
+.delete_reservation {
+    background: #b3261e;
+    padding: 2px 8px;
+    font-size: 0.85rem;
 }
 
-.reservation-confirmation-delete {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(1); 
-
-    z-index: 1000; 
-    opacity: 0;
-    visibility: hidden;
-}
-
-.reservation-confirmation-delete.active {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(1); 
-
-    height: 50vh;
-    width: 400px;
-    opacity: 0.9;
-    visibility: visible;
-    background-color: rgb(100, 99, 99);
-    border-radius: 10px;
-    border:1px, rgb(0, 0, 0), solid;
-    color:red;
+.delete_reservation:hover {
+    background: #8c1e17;
 }
