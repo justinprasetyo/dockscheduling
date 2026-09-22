@@ -127,7 +127,7 @@ def delete_reservation(res_id):
         DELETE FROM reservations
         WHERE id = ?
     """, (
-        res_id
+        res_id,
     ))
 
     connection.commit()
@@ -169,6 +169,10 @@ def get_allreservations():
     return arr
 
 def get_filteredreservations(filtertype, filterinput):
+    allowed = {"dock_number", "start_date", "end_date", "reason", "id"}
+    if filtertype not in allowed:
+        return []
+    
     connection = get_db()
 
     arr = []
@@ -184,5 +188,20 @@ def get_filteredreservations(filtertype, filterinput):
     connection.close()
     return arr
 
-def seed_reservation(dock_num, new_end, new_start, reason):
-    return '', 204
+def seed_reservations():
+    connection = get_db()
+    count = connection.execute("SELECT COUNT(*) FROM reservations").fetchone()[0]
+    if count == 0:
+        sample = [
+            (1, "2026-10-01", "2026-10-05", "ROV-X 7:15 AM example"),
+            (2, "2026-10-03", "2026-10-04", "Community sail day"),
+            (3, "2026-10-10", "2026-10-20", "R/V2 8:30 AM example"),
+        ]
+        connection.executemany(
+            "INSERT INTO reservations (dock_number, start_date, end_date, reason) VALUES (?, ?, ?, ?)",
+            sample,
+        )
+        connection.commit()
+    connection.close()
+
+seed_reservations()

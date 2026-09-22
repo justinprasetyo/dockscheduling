@@ -21,11 +21,7 @@ def get_available():
 
     if "delete" in data and data["delete"]:
         delete_reservation(data["reservation_id"])
-        return jsonify({"name": dock_name,
-                            "start_date": data["start_date"],
-                            "end_date": data["end_date"],
-                            "reason": data["reason"]
-                            })
+        return jsonify({})
 
     #i dont need this for now
     #calculate other available docks too with proper sizing and dates if results in error

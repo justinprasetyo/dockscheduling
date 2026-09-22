@@ -61,16 +61,16 @@
 
     <section class="reservations-list">
         <h2>Current Reservations (YYYY-MM-DD)</h2>
-        <label for="filter-type">Sort by:</label>
+        <label for="filter-type">Filter by:</label>
         <select id="filter-type" name="docks">
-            <option value="dock_number">Dock number (integer)</option>
+            <option value="dock_number">Dock number (1 to 6)</option>
             <option value="start_date">Start date</option>
             <option value="end_date">End date</option>
             <option value="reason">Reason</option>
             <option value="id">ID</option>
         </select>
-        <input id="filter-input" placeholder="sort by...">
-        <button id="filter-btn">sort</button>
+        <input id="filter-input" placeholder="filter by...">
+        <button id="filter-btn">filter</button>
 
         <table>
             <thead>
@@ -84,13 +84,6 @@
             </thead>
 
             <tbody id="reservations-table">
-                <tr>
-                    <th>test</th>
-                    <th>test</th>
-                    <th>test</th>
-                    <th>test</th>
-                    <th>1923912893012</th>
-                </tr>
                 
             </tbody>
         </table>

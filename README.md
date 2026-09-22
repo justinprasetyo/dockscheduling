@@ -1,16 +1,8 @@
-# dockscheduling
-Dock Scheduling System
+# Dock Scheduling System
 **Please allow up to 60 seconds for the live demo to wake up on the first load.**
 live url: https://dockscheduler.onrender.com
 
-PROBLEM:
-A WHOI marine research facility needs to manage berths of varying lengths. Vessels reserve a berth for specific ranges of days. The waterfront also hosts non-vessel events such as community sail days that also occupy a berth.
-
-A sample schedule is attached to this email, containing 23 years of bookings. Some issues include the need to manually check for double-bookings by looking at a grid and verifying that a vessel actually fits the berth it has been assigned to.
-
-Build a system to manage these reservations.
-
-DOCKS LIST:
+## DOCKS LIST:
 dock number 1: North Pier West - 410'
 dock number 2: North Pier Face - 75'
 dock number 3: North Pier East - 240'
@@ -18,17 +10,29 @@ dock number 4: Inner Channel - 55'
 dock number 5: South Float West - 90'
 dock number 6: South Float East - 90'
 
-FEATURES:
+## Running locally
+git clone https://github.com/justinprasetyo/dockscheduling.git
+pip install -r requirements.txt
+python3 app.py
 
-error checks:
-_vessel dimensions are capped (max lengths are at the end of every dock's name in feet), *max widths of docks are assumed.
+## Assumptions
+- End date is inclusive; a boat is expected to leave the night of the end
+  date, not the morning
+- Dock widths aren't in the sample data, so I estimated them (list them)
+- Non-vessel events are entered with vessel dimensions of 0
 
-_vessel dimensions can't be less than 0. this case will throw an error on the screen.
+## Design
+- One SQL query checks for date overlap on a dock: two ranges overlap when
+  each starts on or before the other ends
+- Booking is a two-step confirm; the server rechecks at confirm time,
+  not just on the initial check when you press 'Enter'
+- Substring filter for dock/start/end date/reason using SQL LIKE %%
 
-_if event doesn't include a vessel, users are expected to write 0 for both vessel dimensions and state the lack of a vessel in the reason input.
+## Short term limitations
+- Free hosting sleeps after inactivity; first load can take ~60s
+- The database resets on a cold restart (I seeded it to have some example reservations on startup)
 
-_dates cannot collide with other reservations'. *end date is inclusive, a boat is expected to leave the night of the end date (not the morning); (if the starting and end date are the same, a boat is expected to come the morning of the start date and take up that whole day).
-
-_starting dates cannot be more than the end date. this case will throw an error on the screen.
-
-_
+## Future ideas
+- Make an import script to import the 23 year sample schedule and add an audit view for existing
+  conflicts and oversized vessels for even more security against mistakes
+- Ability to sort (instead of only filter out) reservations by clicking column headers
