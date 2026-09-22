@@ -12,14 +12,20 @@ const reasontext = document.getElementById("reason")
 const alerttext = document.getElementById("alert")
 
 const reservation_confirmation_page = document.getElementById("reservation-confirmation")
+const reservation_confirmation_page_text = document.getElementById("reservation-confirmation-text")
 const confirmbtn = document.getElementById("confirm-reservation")
 const unconfirmbtn = document.getElementById("unconfirm-reservation")
 
 const reservation_confirmation_page_delete = document.getElementById("reservation-confirmation-delete")
+const reservation_confirmation_page_delete_text = document.getElementById("reservation-confirmation-delete-text")
 const confirmbtn_resdelete = document.getElementById("confirm-reservation-delete")
 const unconfirmbtn_resdelete = document.getElementById("unconfirm-reservation-delete")
 
 const reservations_table = document.getElementById("reservations-table")
+
+const filterbtn = document.getElementById("filter-btn")
+const filter_type = document.getElementById("filter-type")
+const filter_input = document.getElementById("filter-input")
 
 let selected_id
 
@@ -82,11 +88,12 @@ enterbtn.addEventListener('click', async () => {
         alerttext.textContent = `error: ${result}`
     } else {
         alerttext.textContent = ""
+        reservation_confirmation_page_text.textContent = `dock: ${result["name"]}; \n${result["start_date"]} to ${result["end_date"]}; \nreason: ${result["reason"]}`
         reservation_confirmation_page.classList.add("active")
         //window.alert("Reservation made, thank you.")
     }
     
-    //console.log(result)
+    console.log(result)
     console.log(dock_name.value)
     console.log(`${date_start.value}, ${date_end.value}`)
 }) 
@@ -142,6 +149,28 @@ unconfirmbtn_resdelete.addEventListener('click', () => {
     reservation_confirmation_page_delete.classList.remove("active")
 })
 
+filterbtn.addEventListener('click', async () => {
+    if (filter_input.value == ''){
+        await loadReservations()
+        return
+    }
+    const response = await fetch('/api/reservations/filtered', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            'filter_type': filter_type.value,
+            'filter_input': filter_input.value
+        })
+    });
+
+    const rows = await response.json()
+    reservations_table.innerHTML = "" //clear old rows first
+    create_reservation(rows)
+    deleteButtons()
+})
+
 
 function deleteButtons() {
     const delete_buttons = document.querySelectorAll('.delete_reservation');
@@ -150,6 +179,7 @@ function deleteButtons() {
         if (!btn.classList.value.includes("event-made")) {
             btn.addEventListener('click', async () => {
                 selected_id = delete_buttons[index].id
+                reservation_confirmation_page_delete_text.textContent = `ID: ${selected_id}`
                 delete_buttons[index].classList.add("event-made")
                 reservation_confirmation_page_delete.classList.add("active")
             });

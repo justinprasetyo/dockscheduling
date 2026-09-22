@@ -168,3 +168,21 @@ def get_allreservations():
     connection.close()
     return arr
 
+def get_filteredreservations(filtertype, filterinput):
+    connection = get_db()
+
+    arr = []
+    rows = connection.execute(f"""
+        SELECT id, dock_number, start_date, end_date, reason
+        FROM reservations
+        WHERE {filtertype} LIKE '%{filterinput}%'
+        ORDER BY start_date 
+   """, 
+   ).fetchall()
+    for row in rows:
+        arr.append(dict(row))
+    connection.close()
+    return arr
+
+def seed_reservation(dock_num, new_end, new_start, reason):
+    return '', 204

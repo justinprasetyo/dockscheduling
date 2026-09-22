@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import os
 
-from database import dock_dict, make_reservation, delete_reservation, get_allreservations
+from database import dock_dict, make_reservation, delete_reservation, get_allreservations, get_filteredreservations
 from check import check_size, check_date
 
 app = Flask(__name__)
@@ -21,7 +21,11 @@ def get_available():
 
     if "delete" in data and data["delete"]:
         delete_reservation(data["reservation_id"])
-        return '', 204
+        return jsonify({"name": dock_name,
+                            "start_date": data["start_date"],
+                            "end_date": data["end_date"],
+                            "reason": data["reason"]
+                            })
 
     #i dont need this for now
     #calculate other available docks too with proper sizing and dates if results in error
@@ -51,16 +55,37 @@ def get_available():
             err_message += f"{obj['start_date']} to {obj['end_date']} (ID: {obj['id']}, reason: {obj['reason']}). "
         return jsonify(err_message)
 
+    dock_name = dock_dict[int(data["dock_number"]) - 1]["name"]
     #make make-reservation into a yes or no button with a pop-up
     if "confirm_reservation" in data and data["confirm_reservation"]:
         make_reservation(data["dock_number"], data["start_date"], data["end_date"], data["reason"])
-        return jsonify({})
+        return jsonify({"name": dock_name,
+                        "start_date": data["start_date"],
+                        "end_date": data["end_date"],
+                        "reason": data["reason"]
+                        }) #send this to javascript to show in confirmation page this info.
 
-    return jsonify({})
+    return jsonify({"name": dock_name,
+                    "start_date": data["start_date"],
+                    "end_date": data["end_date"],
+                    "reason": data["reason"]
+                    })
 
 @app.route('/api/reservations', methods=['GET'])
 def list_reservations():
     rows = get_allreservations()
+    for row in rows:
+        row["dock_name"] = dock_dict[int(row["dock_number"]) - 1]["name"]
+    return jsonify(rows)
+
+@app.route('/api/reservations/filtered', methods=['POST'])
+def list_filteredreservations():
+    data = request.get_json() 
+    
+    if data is None:
+        return jsonify({"error": "No valid data received"}), 400
+    
+    rows = get_filteredreservations(data["filter_type"], data["filter_input"])
     for row in rows:
         row["dock_name"] = dock_dict[int(row["dock_number"]) - 1]["name"]
     return jsonify(rows)

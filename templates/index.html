@@ -47,18 +47,30 @@
 
     <div class="reservation-confirmation" id="reservation-confirmation">
         <h4>confirm reservation?</h4>
+        <p id="reservation-confirmation-text"></p>
         <button id="unconfirm-reservation">no</button>
         <button id="confirm-reservation">yes</button>
     </div>
 
     <div class="reservation-confirmation-delete" id="reservation-confirmation-delete">
         <h4>are you sure you want to cancel this reservation?</h4>
+        <p id="reservation-confirmation-delete-text"></p>
         <button id="unconfirm-reservation-delete">no</button>
         <button id="confirm-reservation-delete">yes</button>
     </div>
 
     <section class="reservations-list">
         <h2>Current Reservations (YYYY-MM-DD)</h2>
+        <label for="filter-type">Sort by:</label>
+        <select id="filter-type" name="docks">
+            <option value="dock_number">Dock number (integer)</option>
+            <option value="start_date">Start date</option>
+            <option value="end_date">End date</option>
+            <option value="reason">Reason</option>
+            <option value="id">ID</option>
+        </select>
+        <input id="filter-input" placeholder="sort by...">
+        <button id="filter-btn">sort</button>
 
         <table>
             <thead>
